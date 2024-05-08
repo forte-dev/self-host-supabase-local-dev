@@ -1,0 +1,52 @@
+services:
+  reverse-proxy:
+    image: traefik:v2.11.2
+    container_name: traefik
+    hostname: traefik
+#    security_opt:
+#      - no-new-privileges:true
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    environment:
+      TRAEFIK_DASHBOARD_USER: "${TRAEFIK_DASHBOARD_USER}"
+      TRAEFIK_DASHBOARD_PWD: "${TRAEFIK_DASHBOARD_PWD}"
+    depends_on:
+      - dockersocket
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/fileConfig.yml:/etc/traefik/fileConfig.yml:ro
+      - ./traefik/htpasswd:/etc/traefik/htpasswd:ro
+      - certs:/etc/ssl/traefik
+    networks:
+      - supabase
+
+  dockersocket:
+    container_name: dockersocket
+    image: tecnativa/docker-socket-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - supabase
+    environment:
+      CONTAINERS: 1
+      POST: 0
+    privileged: true
+    restart: unless-stopped
+
+volumes:
+  certs:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/cert
+      o: bind
+
+networks:
+  supabase:
+    driver: bridge
+    external: true
+  proxy:
+    external: true

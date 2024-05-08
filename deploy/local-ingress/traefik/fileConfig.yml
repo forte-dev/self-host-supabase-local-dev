@@ -1,0 +1,104 @@
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/ssl/traefik/cert.pem
+        keyFile: /etc/ssl/traefik/key.pem
+  certificates:
+    - certFile: /etc/ssl/traefik/cert.pem
+      keyFile: /etc/ssl/traefik/key.pem
+
+http:
+  routers:
+###############################################################################################################################################################################
+
+    ## EXTERNAL ROUTING ##
+    traefik:
+      rule: "Host(`traefik.acme.localhost`)"
+      service: "api@internal"
+      entryPoints:
+        - https
+      middlewares:
+        - "traefikDashboardAuth"
+        - "securityHeaders"
+      tls:
+        domains:
+          - main: "acme.localhost"
+            sans:
+              - "*.acme.localhost"
+
+    #Supabase Kong routing
+    supabase-kong:
+      service: supabase-kong
+      entryPoints:
+        - https
+      rule: "Host(`studio.acme.localhost`)"
+      tls: {}
+      middlewares:
+        - "securityHeaders"
+
+    #Supabase Analytics routing
+    supabase-analytics:
+      service: supabase-analytics
+      entryPoints:
+        - https
+      rule: "Host(`analytics.acme.localhost`)"
+      tls: {}
+      middlewares:
+        - "securityHeaders"
+
+
+########################################################################################################################################################################
+
+  ## SERVICES ##
+  services:
+    # Traefik service
+    traefik:
+      loadBalancer:
+        servers:
+          - url: "http://traefik:8080"
+
+    # Supabase Kong service
+    supabase-kong:
+      loadbalancer:
+        servers:
+          - url: "http://kong:8000"
+
+    # Supabase Analytics service
+    supabase-analytics:
+      loadbalancer:
+        servers:
+          - url: "http://analytics:4000"
+
+
+###############################################################################################################################################################################
+
+  ## MIDDLEWARES ##
+  middlewares:
+    # Traefik
+    traefikDashboardAuth:
+      basicAuth:
+        usersFile: "/etc/traefik/htpasswd"
+        users:
+          - "{{env "TRAEFIK_DASHBOARD_USER"}}:{{env "TRAEFIK_DASHBOARD_PWD"}}"
+
+
+    # Security headers
+    securityHeaders:
+      headers:
+        customResponseHeaders:
+          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
+          server: ""
+        sslProxyHeaders:
+          X-Forwarded-Proto: https
+        referrerPolicy: "same-origin"
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+        contentTypeNosniff: true
+        browserXssFilter: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsSeconds: 63072000
+        stsPreload: true

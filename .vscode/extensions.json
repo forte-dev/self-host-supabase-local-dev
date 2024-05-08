@@ -1,0 +1,32 @@
+{
+  "recommendations": [
+    "ms-vscode-remote.remote-containers",
+    "redhat.vscode-yaml",
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "ms-azuretools.vscode-docker",
+    "googlecloudtools.cloudcode",
+    "dbaeumer.vscode-eslint",
+    "denoland.vscode-deno",
+    "esbenp.prettier-vscode",
+    "wayou.vscode-todo-highlight",
+    "firsttris.vscode-jest-runner",
+    "streetsidesoftware.code-spell-checker",
+    "github.vscode-github-actions",
+    "donjayamanne.githistory",
+    "eamodio.gitlens",
+    "ms-vscode.remote-explorer",
+    "ms-vscode-remote.remote-ssh-edit",
+    "ms-vscode-remote.remote-ssh",
+    "formulahendry.code-runner",
+    "chrmarti.regex",
+    "vscode-icons-team.vscode-icons",
+    "aaron-bond.better-comments",
+    "chakrounanas.turbo-console-log",
+    "oderwat.indent-rainbow",
+    "formulahendry.auto-rename-tag",
+    "pranaygp.vscode-css-peek",
+    "kamikillerto.vscode-colorize",
+    "yzhang.markdown-all-in-one",
+    "idleberg.icon-fonts"
+  ]
+}

@@ -1,0 +1,97 @@
+# IDE's
+.idea
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# dependencies
+node_modules
+node_modules/
+
+# testing
+coverage
+
+# misc
+.DS_Store
+*.pem
+tsconfig.tsbuildinfo
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files
+env*
+.env
+.env*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Buildables
+.turbo
+.cache
+.bin/
+dist
+dist/
+build
+build/
+build/Release
+public/build/
+server/dist/
+public/dist/
+storybook-static/
+deploy/supabase/volumes/db/data/
+deploy/supabase/volumes/storage/
+
+
+# TS
+typings/
+
+# Specific Configurations and IDE Settings:
+.eslintcache
+.npm
+.yarn-integrity
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.terraform
+.env.bkp
+*.lock.hcl
+terraform.tfvars
+*.tfstate*
+supabase.auto.pkrvars.hcl
+sender-verification.sh
+.tsbuildinfo
+htpasswd
+!htpasswd.example
+
+# Logs and Debug Files:
+*.log
+
+# Temporary and Runtime Files:
+tmp
+*.swp
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Build and Dependency Folders:
+lib-cov
+*.lcov
+
+# Archives and Package Files:
+*.tgz
+
+# Miscellaneous Patterns:
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+test.http

@@ -1,0 +1,52 @@
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+serversTransport:
+  insecureSkipVerify: false
+
+ping: {}
+
+api:
+  dashboard: true
+
+providers:
+  providersThrottleDuration: 30s
+
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    watch: true
+    network: supabase
+    # Default host rule to container_name.domain.example
+    defaultRule: "Host(`{{ lower (trimPrefix `/` .Name )}}.acme.localhost`)"
+    swarmModeRefreshSeconds: 15s
+    exposedByDefault: false
+
+  file:
+    filename: /etc/traefik/fileConfig.yml
+    watch: true
+
+accessLog:
+  bufferingSize: 100
+  # filePath: log/traefik.log | "os.Stdout" (Default)
+  # format: "json" | "common" (Default)
+
+log:
+  level: INFO
+  # filePath: log/traefik.log | "os.Stdout" (Default)
+  # format: "json" | "common" (Default)
+
+entryPoints:
+  # Not used in apps, but redirect everything from HTTP to HTTPS
+  http:
+    address: ':80'
+    http:
+      redirections:
+        entryPoint:
+          permanent: true
+          to: https
+          scheme: https
+
+  # HTTPS endpoint, with domain wildcard
+  https:
+    address: ':443'
